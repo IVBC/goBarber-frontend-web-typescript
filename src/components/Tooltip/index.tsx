@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { string } from 'yup';
 import { Container } from './styles';
 
 interface TooltipProps {
