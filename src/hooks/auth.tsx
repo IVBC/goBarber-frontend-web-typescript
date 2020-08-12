@@ -2,9 +2,15 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 
 import api from '../services/api';
 
+interface User {
+  id: string;
+  name: string;
+  avatar_url: string;
+}
+
 interface AuthState {
   token: string;
-  user: any;
+  user: User;
 }
 interface SignInCredentials {
   email: string;
@@ -12,7 +18,7 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  user: any;
+  user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
@@ -32,10 +38,7 @@ const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post<{ token: string; user: string }>(
-      'sessions',
-      { email, password },
-    );
+    const response = await api.post<AuthState>('sessions', { email, password });
     console.log(response.data);
 
     const { token, user } = response.data;
